@@ -1,12 +1,28 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
+const fs = require('fs');
 
 const userDataPath = path.join(__dirname, 'data', 'profile');
 app.setPath('userData', userDataPath);
 
-const fs = require('fs');
-const cssPath = path.join(__dirname, 'styles', 'no-scrollbar.css');
-const customStyles = fs.readFileSync(cssPath, 'utf8');
+const BLOCKED_DOMAINS = loadBlocklist(path.join(__dirname, 'blocklist.txt'));
+console.log(`[${new Date().toISOString()}] Blocage actif : ${BLOCKED_DOMAINS.length} domaines`);
+
+function loadBlocklist(filePath) {
+    try {
+        const content = fs.readFileSync(filePath, 'utf8');
+        // Filtrer les lignes : pas de #, pas vide, prendre juste le domaine
+        return content
+            .split('\n')
+            .map(line => line.trim())
+            .filter(line => line && !line.startsWith('#'))
+            .map(line => line.split(/\s+/)[1]) // Prendre le second mot (le domaine)
+            .filter(domain => domain); // Éliminer undefined/vidéos
+    } catch (error) {
+        console.error("Erreur chargement blocklist:", error.message);
+        return [];
+    }
+}
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
@@ -21,7 +37,50 @@ function createWindow() {
         }
     });
 
+    const noscrollbarPath = path.join(__dirname, 'styles', 'no-scrollbar.css');
+    const customStyles = fs.readFileSync(noscrollbarPath, 'utf8');
     mainWindow.webContents.insertCSS(customStyles);
+
+    // --- BLOCAGE DES REQUÊTES RÉSEAU ---
+    const filter = {
+        urls: [
+            '*://*/*',  // Intercepte TOUTES les requêtes HTTP/HTTPS
+            '*://*/*.js',
+            '*://*/*.css',
+            '*://*/*.png',
+            '*://*/*.jpg'
+        ]
+    };
+
+    mainWindow.webContents.session.webRequest.onBeforeRequest(filter, (details, callback) => {
+        const url = details.url;
+
+        // Vérifier si l'URL contient un domaine bloqué
+        const isBlocked = BLOCKED_DOMAINS.some(domain => {
+            // Évite les faux positifs (ex: soundcloud.ad.com ≠ ad.domain.com)
+            return url.includes(domain) ||
+                url.endsWith(domain) ||
+                url.includes('.' + domain) ||
+                url.includes('/' + domain + '/');
+        });
+
+        if (isBlocked) {
+            console.log(`🚫 Bloqué : ${url}`);
+            callback({ cancel: true });  // Annule la requête
+        } else {
+            callback({});  // Laisse passer
+        }
+    });
+
+    // --- INJECTION CSS (Optionnel - nettoie ce qui est déjà chargé) ---
+    mainWindow.webContents.on('did-finish-load', () => {
+        mainWindow.webContents.insertCSS(`
+            *::-webkit-scrollbar { display: none; }
+            * { scrollbar-width: none; -ms-overflow-style: none; }
+            /* Ajoute tes autres règles anti-pub cosmétiques */
+            .ad-banner, .advertisement, .promo { display: none !important; }
+        `);
+    });
 
     // chargement de soundcloud
     mainWindow.loadURL('https://soundcloud.com/discover');
