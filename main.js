@@ -8,11 +8,11 @@ const { loadBlocklist } = require('./utils/blocklist/parse-blocklist');
 // CONFIG PATHS
 const userDataPath = path.join(__dirname, 'data', 'profile');
 app.setPath('userData', userDataPath);
-console.log(`📂 User profile: ${userDataPath}`);
+// console.log(`📂 User profile: ${userDataPath}`);
 
 // LOAD BLOCKLIST
 const BLOCKED_DOMAINS = loadBlocklist(path.join(__dirname, 'utils', 'blocklist', 'soundcloud-blocklist.txt'));
-console.log(`[${new Date().toISOString()}] Active blocking: ${BLOCKED_DOMAINS.length} domains`);
+// console.log(`[${new Date().toISOString()}] Active blocking: ${BLOCKED_DOMAINS.length} domains`);
 
 // --- CREATE WINDOW ---
 function createWindow() {
@@ -72,7 +72,7 @@ function createWindow() {
         });
 
         if (isBlocked) {
-            console.log(`🚫 Blocked : ${url}`);
+            // console.log(`🚫 Blocked : ${url}`);
             callback({ cancel: true });  // cancel request
         } else {
             callback({});  // allow request
