@@ -44,7 +44,7 @@ function createWindow() {
     });
 
     // --- INITIALISATION OF TRAY ---
-    const iconPath = path.join(__dirname, 'assets', 'sc_icon_32x.png');
+    const iconPath = path.join(__dirname, 'assets', 'sc_icon.png');
 
     // Chargement et redimensionnement de l'icône
     const rawImg = nativeImage.createFromPath(iconPath);

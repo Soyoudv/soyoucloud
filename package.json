@@ -42,14 +42,14 @@
       "target": [
         "nsis"
       ],
-      "icon": "assets/sc_icon_32x.ico"
+      "icon": "assets/sc_icon.ico"
     },
     "linux": {
       "target": [
         "AppImage",
         "deb"
       ],
-      "icon": "assets/sc_icon_32x.png"
+      "icon": "assets/sc_icon.png"
     }
   }
 }
