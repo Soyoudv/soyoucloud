@@ -17,14 +17,17 @@
     "privacy",
     "linux"
   ],
-  "author": "Soyou",
+  "author": {
+    "name": "Soyoudv",
+    "email": "noname54765@gmail.com"
+  },
   "license": "MIT",
   "devDependencies": {
     "electron": "^31.0.0",
     "electron-builder": "^26.15.0"
   },
   "build": {
-    "appId": "com.soyou.soysoundcloud",
+    "appId": "com.soyou.soyoucloud",
     "productName": "SoyouCloud",
     "directories": {
       "output": "dist"
