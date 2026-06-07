@@ -38,8 +38,18 @@ function createWindow() {
     const nobannerPath = path.join(__dirname, 'styles', 'no-banner.css');
     const customStyles2 = fs.readFileSync(nobannerPath, 'utf8');
 
+    // hide soundcloud go
+    const noscgoPath = path.join(__dirname, 'styles', 'no-soundcloud-go.css');
+    const customStyles3 = fs.readFileSync(noscgoPath, 'utf8');
+
+    //hide mobile app promo
+    const nomobilePath = path.join(__dirname, 'styles', 'no-mobile.css');
+    const customStyles4 = fs.readFileSync(nomobilePath, 'utf8');
+
     mainWindow.webContents.insertCSS(customStyles);
     mainWindow.webContents.insertCSS(customStyles2);
+    mainWindow.webContents.insertCSS(customStyles3);
+    mainWindow.webContents.insertCSS(customStyles4);
 
     // BLOCKING TRACKERS/ADS
     const filter = {

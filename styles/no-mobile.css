@@ -1,0 +1,3 @@
+article[class*="mobileApps"] {
+    display: none !important;
+}

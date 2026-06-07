@@ -1,0 +1,4 @@
+div[class="header__upsellWrapper left"],
+[class="sidebarModule"] {
+    display: none !important;
+}
