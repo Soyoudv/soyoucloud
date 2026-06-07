@@ -23,9 +23,18 @@ function createWindow() {
         }
     });
 
+    // --- BLOCAGE COSMÉTIQUE (CSS) ---
     const noscrollbarPath = path.join(__dirname, 'styles', 'no-scrollbar.css');
     const customStyles = fs.readFileSync(noscrollbarPath, 'utf8');
     mainWindow.webContents.insertCSS(customStyles);
+    mainWindow.webContents.on('did-finish-load', () => {
+        mainWindow.webContents.insertCSS(`
+            *::-webkit-scrollbar { display: none; }
+            * { scrollbar-width: none; -ms-overflow-style: none; }
+            /* Ajoute tes autres règles anti-pub cosmétiques */
+            .ad-banner, .advertisement, .promo { display: none !important; }
+        `);
+    });
 
     // --- BLOCAGE DES REQUÊTES RÉSEAU ---
     const filter = {
@@ -37,7 +46,6 @@ function createWindow() {
             '*://*/*.jpg'
         ]
     };
-
     mainWindow.webContents.session.webRequest.onBeforeRequest(filter, (details, callback) => {
         const url = details.url;
 
@@ -58,17 +66,7 @@ function createWindow() {
         }
     });
 
-    // --- INJECTION CSS (Optionnel - nettoie ce qui est déjà chargé) ---
-    mainWindow.webContents.on('did-finish-load', () => {
-        mainWindow.webContents.insertCSS(`
-            *::-webkit-scrollbar { display: none; }
-            * { scrollbar-width: none; -ms-overflow-style: none; }
-            /* Ajoute tes autres règles anti-pub cosmétiques */
-            .ad-banner, .advertisement, .promo { display: none !important; }
-        `);
-    });
-
-    // chargement de soundcloud
+    // CHARGEMENT DE LA PAGE SOUNDLOUD
     mainWindow.loadURL('https://soundcloud.com/discover');
     // mainWindow.webContents.openDevTools();
 }
