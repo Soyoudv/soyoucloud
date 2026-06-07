@@ -6,6 +6,7 @@ const { loadBlocklist } = require('./utils/blocklist/parse-blocklist');
 
 const userDataPath = path.join(__dirname, 'data', 'profile');
 app.setPath('userData', userDataPath);
+console.log(`📂 Profil utilisateur: ${userDataPath}`);
 
 const BLOCKED_DOMAINS = loadBlocklist(path.join(__dirname, 'utils', 'blocklist', 'hosts.txt'));
 console.log(`[${new Date().toISOString()}] Blocage actif : ${BLOCKED_DOMAINS.length} domaines`);
