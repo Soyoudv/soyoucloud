@@ -1,0 +1,22 @@
+{
+  "name": "soyoucloud",
+  "version": "1.0.0",
+  "description": "Client SoundCloud légitime et privé avec blocage des publicités.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron --no-sandbox .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "soundcloud",
+    "electron",
+    "adblock",
+    "privacy",
+    "linux"
+  ],
+  "author": "Soyou",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^42.3.3"
+  }
+}
