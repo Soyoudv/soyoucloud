@@ -1,2 +1,16 @@
-node_modules
-data
+# Dépendances installées (toujours ignoré)
+node_modules/
+
+# Données utilisateurs & profils (sécurité & spécificité locale)
+data/
+
+# Fichiers temporaires / OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Editeurs de texte
+.vscode/
+.idea/
+*.swp
+*.swo
