@@ -27,7 +27,12 @@ function createWindow() {
     // --- BLOCAGE COSMÉTIQUE (CSS) ---
     const noscrollbarPath = path.join(__dirname, 'styles', 'no-scrollbar.css');
     const customStyles = fs.readFileSync(noscrollbarPath, 'utf8');
+
+    const nobannerPath = path.join(__dirname, 'styles', 'no-banner.css');
+    const customStyles2 = fs.readFileSync(nobannerPath, 'utf8');
+
     mainWindow.webContents.insertCSS(customStyles);
+    mainWindow.webContents.insertCSS(customStyles2);
 
     // --- BLOCAGE DES REQUÊTES RÉSEAU ---
     const filter = {
