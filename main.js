@@ -8,7 +8,7 @@ const userDataPath = path.join(__dirname, 'data', 'profile');
 app.setPath('userData', userDataPath);
 console.log(`📂 Profil utilisateur: ${userDataPath}`);
 
-const BLOCKED_DOMAINS = loadBlocklist(path.join(__dirname, 'utils', 'blocklist', 'hosts.txt'));
+const BLOCKED_DOMAINS = loadBlocklist(path.join(__dirname, 'utils', 'blocklist', 'soundcloud-blocklist.txt'));
 console.log(`[${new Date().toISOString()}] Blocage actif : ${BLOCKED_DOMAINS.length} domaines`);
 
 function createWindow() {

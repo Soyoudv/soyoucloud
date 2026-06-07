@@ -1,0 +1,42 @@
+# --- SOUNDLOUD AD/TRACKER BLOCKLIST ---
+# Copie ce contenu dans un fichier nommé 'soundcloud-blocklist.txt'
+
+# DoubleClick (Google Ads)
+0.0.0.0 doubleclick.net
+0.0.0.0 googleads.g.doubleclick.net
+0.0.0.0 googlesyndication.com
+0.0.0.0 google-analytics.com
+0.0.0.0 analytics.google.com
+
+# Ad Exchange & Bidder
+0.0.0.0 htlbid.com
+0.0.0.0 rubiconproject.com
+0.0.0.0 bidr.io
+0.0.0.0 pubmatic.com
+0.0.0.0 appnexus.com
+
+# Tracking & Analytics
+0.0.0.0 scorecardresearch.com
+0.0.0.0 chartbeat.com
+0.0.0.0 quantserve.com
+0.0.0.0 piwik.pro
+0.0.0.0 datadoghq.com
+0.0.0.0 browser-intake-datadoghq.com
+0.0.0.0 newrelic.com
+
+# Marketing & Engagement
+0.0.0.0 moengage.com
+0.0.0.0 clevertap.com
+0.0.0.0 onetrust.com
+0.0.0.0 cookiebot.com
+
+# Cookie Consent Scripts (tu peux les supprimer si tu veux le bandeau)
+0.0.0.0 cookie-cdn.cookiepro.com
+0.0.0.0 cdn.cookielaw.org
+0.0.0.0 consent.trustarc.com
+
+# Autres Trackers Courants
+0.0.0.0 ssgai.com
+0.0.0.0 liveintent.com
+0.0.0.0 indexww.com
+0.0.0.0 tradelab.fr
