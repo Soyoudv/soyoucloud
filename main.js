@@ -2,27 +2,13 @@ const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
+const { loadBlocklist } = require('./utils/blocklist/parse-blocklist');
+
 const userDataPath = path.join(__dirname, 'data', 'profile');
 app.setPath('userData', userDataPath);
 
 const BLOCKED_DOMAINS = loadBlocklist(path.join(__dirname, 'blocklist.txt'));
 console.log(`[${new Date().toISOString()}] Blocage actif : ${BLOCKED_DOMAINS.length} domaines`);
-
-function loadBlocklist(filePath) {
-    try {
-        const content = fs.readFileSync(filePath, 'utf8');
-        // Filtrer les lignes : pas de #, pas vide, prendre juste le domaine
-        return content
-            .split('\n')
-            .map(line => line.trim())
-            .filter(line => line && !line.startsWith('#'))
-            .map(line => line.split(/\s+/)[1]) // Prendre le second mot (le domaine)
-            .filter(domain => domain); // Éliminer undefined/vidéos
-    } catch (error) {
-        console.error("Erreur chargement blocklist:", error.message);
-        return [];
-    }
-}
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
