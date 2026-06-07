@@ -6,9 +6,9 @@ const fs = require('fs');
 const { loadBlocklist } = require('./utils/blocklist/parse-blocklist');
 
 // CONFIG PATHS
-const userDataPath = path.join(__dirname, 'data', 'profile');
-app.setPath('userData', userDataPath);
-// console.log(`📂 User profile: ${userDataPath}`);
+// const userDataPath = path.join(__dirname, 'data', 'profile');
+// app.setPath('userData', userDataPath);
+// console.log(`📂 User profile: ${app.getPath('userData')}`);
 
 // LOAD BLOCKLIST
 const BLOCKED_DOMAINS = loadBlocklist(path.join(__dirname, 'utils', 'blocklist', 'soundcloud-blocklist.txt'));
