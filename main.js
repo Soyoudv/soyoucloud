@@ -28,14 +28,6 @@ function createWindow() {
     const noscrollbarPath = path.join(__dirname, 'styles', 'no-scrollbar.css');
     const customStyles = fs.readFileSync(noscrollbarPath, 'utf8');
     mainWindow.webContents.insertCSS(customStyles);
-    mainWindow.webContents.on('did-finish-load', () => {
-        mainWindow.webContents.insertCSS(`
-            *::-webkit-scrollbar { display: none; }
-            * { scrollbar-width: none; -ms-overflow-style: none; }
-            /* Ajoute tes autres règles anti-pub cosmétiques */
-            .ad-banner, .advertisement, .promo { display: none !important; }
-        `);
-    });
 
     // --- BLOCAGE DES REQUÊTES RÉSEAU ---
     const filter = {
@@ -69,7 +61,7 @@ function createWindow() {
 
     // CHARGEMENT DE LA PAGE SOUNDLOUD
     mainWindow.loadURL('https://soundcloud.com/discover');
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(createWindow);
