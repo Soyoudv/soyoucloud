@@ -5,7 +5,9 @@
   "main": "main.js",
   "scripts": {
     "start": "electron --no-sandbox .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:win": "electron-builder --win",
+    "build:linux": "electron-builder --linux"
   },
   "keywords": [
     "soundcloud",
@@ -17,6 +19,36 @@
   "author": "Soyou",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^31.0.0"
+    "electron": "^31.0.0",
+    "electron-builder": "^26.15.0"
+  },
+  "build": {
+    "appId": "com.soyou.soysoundcloud",
+    "productName": "SoyouCloud",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "utils/**/*",
+      "styles/**/*",
+      "assets/**/*",
+      "soundcloud-blocklist.txt",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "assets/sc_icon_32x.ico"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "assets/sc_icon_32x.png"
+    }
   }
 }
