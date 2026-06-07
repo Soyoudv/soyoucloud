@@ -2,21 +2,35 @@
 
 A better SoundCloud client.
 
-## you need:
+## Installation:
+
+You can check out the [latest release](https://github.com/Soyoudv/soyoucloud/releases/latest) to quickly find the latest version.
+
+Linux:
+- AppImage can be run by executing the file
+- You can install it on debian with the .deb
+
+Windows:
+- Unzip the portable version and run the .exe
+- You can install it using the Setup.exe
+
+## Build from source:
+
+### Dependances:
 - Node.js installed (recent version)
 - npm or yarn
 
-## install:
-clone the repo
+### Clone the repository
 ```sh
-git clone https://github.com/ton-pseudo/soyoucloud.git
-cd soyoucloud
+git clone https://github.com/ton-pseudo/soyoucloud.git && cd soyoucloud
 ```
-install dependencies:
+
+### Install dependencies:
 ```sh
 npm install
 ```
-## start:
+
+### Start:
 ```sh
 npm start
 ```
