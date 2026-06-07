@@ -1,3 +1,7 @@
+# SoyouCloud
+
+A better SoundCloud client.
+
 ## you need:
 - Node.js installed (recent version)
 - npm or yarn
