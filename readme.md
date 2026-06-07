@@ -22,7 +22,7 @@ Windows:
 
 ### Clone the repository
 ```sh
-git clone https://github.com/ton-pseudo/soyoucloud.git && cd soyoucloud
+git clone https://github.com/Soyoudv/soyoucloud.git && cd soyoucloud
 ```
 
 ### Install dependencies:
