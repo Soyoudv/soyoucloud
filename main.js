@@ -14,7 +14,7 @@ console.log(`📂 User profile: ${userDataPath}`);
 const BLOCKED_DOMAINS = loadBlocklist(path.join(__dirname, 'utils', 'blocklist', 'soundcloud-blocklist.txt'));
 console.log(`[${new Date().toISOString()}] Active blocking: ${BLOCKED_DOMAINS.length} domains`);
 
-// CREATE WINDOW
+// --- CREATE WINDOW ---
 function createWindow() {
     const mainWindow = new BrowserWindow({
         width: 1024,
@@ -28,7 +28,7 @@ function createWindow() {
         }
     });
 
-    // CSS CUSTOM
+    // --- CSS CUSTOM ---
 
     // hide scrollbar
     const noscrollbarPath = path.join(__dirname, 'styles', 'no-scrollbar.css');
@@ -70,7 +70,7 @@ function createWindow() {
         }
     });
 
-    // LOAD SOUNDCLOUD
+    // --- LOAD SOUNDCLOUD ---
     mainWindow.loadURL('https://soundcloud.com/signin');
     // mainWindow.webContents.openDevTools();
 }
