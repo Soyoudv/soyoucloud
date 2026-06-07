@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Tray, Menu, nativeImage } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
@@ -14,6 +14,9 @@ app.setPath('userData', userDataPath);
 const BLOCKED_DOMAINS = loadBlocklist(path.join(__dirname, 'utils', 'blocklist', 'soundcloud-blocklist.txt'));
 // console.log(`[${new Date().toISOString()}] Active blocking: ${BLOCKED_DOMAINS.length} domains`);
 
+let mainWindow;
+let tray = null;
+
 // --- CREATE WINDOW ---
 function createWindow() {
     const mainWindow = new BrowserWindow({
@@ -25,6 +28,62 @@ function createWindow() {
             preload: path.join(__dirname, 'preload.js'),
 
             webSecurity: true
+        },
+        show: false, // dont show until ready
+        autoHideMenuBar: true // hide menu bar for cleaner look
+    });
+
+    // go to tray when closing
+    mainWindow.on('close', (event) => {
+        if (!app.isQuitting) {
+            event.preventDefault();
+            mainWindow.hide(); // just hide the window, dont quit the app
+            return false;
+        }
+        return true;
+    });
+
+    // --- INITIALISATION OF TRAY ---
+    const iconPath = path.join(__dirname, 'assets', 'sc_icon_32x.png');
+
+    // Chargement et redimensionnement de l'icône
+    const rawImg = nativeImage.createFromPath(iconPath);
+    if (process.platform === 'linux') {
+        trayIcon = rawImg.resize({ width: 32, height: 32 });
+    } else if (process.platform === 'darwin') {
+        trayIcon = rawImg.resize({ width: 22, height: 22 }).setTemplateImage(true);
+    } else {
+        trayIcon = rawImg.resize({ width: 16, height: 16 });
+    }
+
+    tray = new Tray(trayIcon);
+
+    // Menu contextuel (clic droit sur l'icône)
+    const contextMenu = Menu.buildFromTemplate([
+        { label: 'Open SoundCloud', click: () => { mainWindow.show(); mainWindow.focus(); } },
+        // { type: 'separator' },
+        // { label: 'Reload', click: () => { mainWindow.reload(); } },
+        { type: 'separator' },
+        {
+            label: 'Close App',
+            click: () => {
+                app.isQuitting = true;
+                mainWindow.close();
+                app.quit();
+            }
+        }
+    ]);
+
+    tray.setToolTip('SoyouCloud');
+    tray.setContextMenu(contextMenu);
+
+    // left click on tray icon to toggle window
+    tray.on('click', () => {
+        if (mainWindow.isVisible()) {
+            mainWindow.hide();
+        } else {
+            mainWindow.show();
+            mainWindow.focus();
         }
     });
 
@@ -82,6 +141,29 @@ function createWindow() {
     // --- LOAD SOUNDCLOUD ---
     mainWindow.loadURL('https://soundcloud.com/signin');
     // mainWindow.webContents.openDevTools();
+
+    // show window when ready
+    mainWindow.once('ready-to-show', () => {
+        mainWindow.show();
+    });
+
+    // macOS specific: re-create window when dock icon is clicked and no other windows are open
+    app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length === 0) {
+            createWindow();
+        }
+    });
 }
 
 app.whenReady().then(createWindow);
+
+// Handle app quitting to allow proper cleanup and prevent issues with tray on some platforms
+app.on('before-quit', () => {
+    app.isQuitting = true;
+});
+
+app.on('window-all-closed', (event) => {
+    if (process.platform !== 'darwin' && !app.isQuitting) {
+        event.preventDefault(); // prevent quitting on non-macOS platforms when all windows are closed
+    }
+});
