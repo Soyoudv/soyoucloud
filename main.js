@@ -87,7 +87,7 @@ function createWindow() {
         // },
         { // TOGGLE PLAY/PAUSE SONG
             label: 'Play/Pause',
-            click: async () => handleTogglePlayPause(mainWindow)
+            click: async () => handleControlCommand(mainWindow, 'play')
         },
         { // NEXT SONG
             label: 'Next',
@@ -128,7 +128,7 @@ function createWindow() {
     tray.setContextMenu(contextMenu);
 
     // left click on tray icon to toggle window
-    tray.on('click', () => handleTogglePlayPause(mainWindow));
+    tray.on('click', () => handleControlCommand(mainWindow, 'play'));
 
     // --- CSS CUSTOM ---
 
