@@ -1,5 +1,4 @@
-const { app, BrowserWindow, Tray, Menu, nativeImage } = require('electron');
-const path = require('path');
+const { app, BrowserWindow, Tray, Menu, nativeImage, ipcMain } = require('electron'); const path = require('path');
 const fs = require('fs');
 
 // LOAD BLOCKLIST
@@ -14,8 +13,23 @@ const { loadBlocklist } = require('./utils/blocklist/parse-blocklist');
 const BLOCKED_DOMAINS = loadBlocklist(path.join(__dirname, 'utils', 'blocklist', 'soundcloud-blocklist.txt'));
 // console.log(`[${new Date().toISOString()}] Active blocking: ${BLOCKED_DOMAINS.length} domains`);
 
-let mainWindow;
-let tray = null;
+let mainWindow = null;
+let trayIcon = null;
+
+// --- IPC HANDLERS ---
+ipcMain.handle('get-sc-status', async () => {
+    try {
+        return await mainWindow.webContents.executeJavaScript('window.soundcloudApi.getStatus()');
+    } catch (error) {
+        console.error("IPC get-sc-status error:", error);
+        return 'error';
+    }
+});
+
+ipcMain.on('control-sc', (event, action) => {
+    mainWindow.webContents.executeJavaScript(`window.soundcloudApi.control('${action}')`)
+        .catch(err => console.error("IPC control-sc error:", err));
+});
 
 // --- CREATE WINDOW ---
 function createWindow() {
@@ -26,7 +40,6 @@ function createWindow() {
             nodeIntegration: false,
             contextIsolation: true,
             preload: path.join(__dirname, 'preload.js'),
-
             webSecurity: true
         },
         show: false, // dont show until ready
@@ -45,9 +58,9 @@ function createWindow() {
 
     // --- INITIALISATION OF TRAY ---
     const iconPath = path.join(__dirname, 'assets', 'sc_icon.png');
-
-    // Chargement et redimensionnement de l'icône
     const rawImg = nativeImage.createFromPath(iconPath);
+
+    // load the icon
     if (process.platform === 'linux') {
         trayIcon = rawImg.resize({ width: 32, height: 32 });
     } else if (process.platform === 'darwin') {
@@ -58,33 +71,70 @@ function createWindow() {
 
     tray = new Tray(trayIcon);
 
-    // Menu contextuel (clic droit sur l'icône)
+    // tray menu
     const contextMenu = Menu.buildFromTemplate([
         // {
-        //     label: 'Play/Pause',
-        //     click: () => {
+        //     label: 'Status Checker', // Nouveau bouton de test
+        //     click: async () => {
+        //         try {
+        //             const status = await mainWindow.webContents.executeJavaScript('window.soundcloudApi.getStatus()');
+        //             console.log('SoundCloud Status:', status);
+        //         } catch (err) {
+        //             console.error('Status check failed:', err);
+        //         }
         //     }
         // },
-        // {
-        //     label: 'Next',
-        //     click: () => {
-        //     }
-        // },
-        // {
-        //     label: 'Previous',
-        //     click: () => {
-        //     }
-        // },
-        {
+        { // TOGGLE PLAY/PAUSE SONG
+            label: 'Play/Pause',
+            click: async () => {
+                const status = await mainWindow.webContents.executeJavaScript('window.soundcloudApi.getStatus()');
+                if (status === 'playing') {
+                    console.log('→ Sending PAUSE command');
+                    try {
+                        mainWindow.webContents.executeJavaScript("window.soundcloudApi.control('pause')");
+                    } catch (err) {
+                        console.error('Pause command failed:', err);
+                    }
+                } else if (status === 'paused') {
+                    console.log('→ Sending PLAY command');
+                    try {
+                        mainWindow.webContents.executeJavaScript("window.soundcloudApi.control('play')");
+                    } catch (err) {
+                        console.error('Play command failed:', err);
+                    }
+                } else {
+                    console.warn('Unknown status, cannot toggle play/pause');
+                }
+            }
+        },
+        { // NEXT SONG
+            label: 'Next',
+            click: () => {
+                try {
+                    mainWindow.webContents.executeJavaScript("window.soundcloudApi.control('next')");
+                } catch (err) {
+                    console.error('Next command failed:', err);
+                }
+            }
+        },
+        { // PREVIOUS SONG
+            label: 'Previous',
+            click: () => {
+                try {
+                    mainWindow.webContents.executeJavaScript("window.soundcloudApi.control('prev')");
+                } catch (err) {
+                    console.error('Previous command failed:', err);
+                }
+            }
+        },
+        { // SHOW APP IF HIDDEN
             label: 'Show App', click: () => {
                 mainWindow.show();
                 mainWindow.focus();
             }
         },
-        // { type: 'separator' },
-        // { label: 'Reload', click: () => { mainWindow.reload(); } },
         { type: 'separator' },
-        {
+        { // RESTART APP
             label: 'Restart App',
             click: () => {
                 app.isQuitting = true;
@@ -94,7 +144,7 @@ function createWindow() {
             }
         },
         { type: 'separator' },
-        {
+        { // CLOSE APP
             label: 'Exit',
             click: () => {
                 app.isQuitting = true;
