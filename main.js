@@ -60,12 +60,42 @@ function createWindow() {
 
     // Menu contextuel (clic droit sur l'icône)
     const contextMenu = Menu.buildFromTemplate([
-        { label: 'Open SoundCloud', click: () => { mainWindow.show(); mainWindow.focus(); } },
+        // {
+        //     label: 'Play/Pause',
+        //     click: () => {
+        //     }
+        // },
+        // {
+        //     label: 'Next',
+        //     click: () => {
+        //     }
+        // },
+        // {
+        //     label: 'Previous',
+        //     click: () => {
+        //     }
+        // },
+        {
+            label: 'Show App', click: () => {
+                mainWindow.show();
+                mainWindow.focus();
+            }
+        },
         // { type: 'separator' },
         // { label: 'Reload', click: () => { mainWindow.reload(); } },
         { type: 'separator' },
         {
-            label: 'Close App',
+            label: 'Restart App',
+            click: () => {
+                app.isQuitting = true;
+                mainWindow.close();
+                app.quit();
+                app.relaunch(); // relaunch the app after quitting
+            }
+        },
+        { type: 'separator' },
+        {
+            label: 'Exit',
             click: () => {
                 app.isQuitting = true;
                 mainWindow.close();
