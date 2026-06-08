@@ -35,8 +35,11 @@ async function handleTogglePlayPause(mainWindow) { // toggle play/pause based on
 }
 
 async function handleControlCommand(mainWindow, action) { // send a simple command (play/pause/next/prev)
-    console.log(`→ Sending '${action}' command`);
-    await safeExecute(mainWindow, `window.soundcloudApi.control('${action}')`);
+    try {
+        await safeExecute(mainWindow, `window.soundcloudApi.control('${action}')`);
+    } catch (err) {
+        console.warn(`Could not send '${action}' command:`, err);
+    }
 }
 
 module.exports = {
