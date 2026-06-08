@@ -35,6 +35,7 @@
     "files": [
       "main.js",
       "preload.js",
+      "play-commands.js",
       "utils/**/*",
       "styles/**/*",
       "assets/**/*",
