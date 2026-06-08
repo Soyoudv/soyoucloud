@@ -29,17 +29,14 @@ contextBridge.exposeInMainWorld('soundcloudApi', {
 
             switch (action) { // find the correct button based on the action
                 case 'play':
-                    target = document.querySelector('button[title="Play current"]');
-                    break;
-                case 'pause':
-                    target = document.querySelector('button[title="Pause current"]');
+                    target = document.querySelector('button[class*="playControls__play"]');
                     break;
                 case 'next':
-                    target = document.querySelector('[class*="playControls__next"]') ||
+                    target = document.querySelector('button[class*="playControls__next"]') ||
                         document.querySelector('.skip-forward');
                     break;
                 case 'prev':
-                    target = document.querySelector('[class*="playControls__prev"]') ||
+                    target = document.querySelector('button[class*="playControls__prev"]') ||
                         document.querySelector('.skip-backward');
                     break;
             }
