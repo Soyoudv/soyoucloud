@@ -11,6 +11,9 @@ const { loadBlocklist } = require('./utils/blocklist/parse-blocklist');
 const BLOCKED_DOMAINS = loadBlocklist(path.join(__dirname, 'utils', 'blocklist', 'soundcloud-blocklist.txt'));
 // console.log(`[${new Date().toISOString()}] Active blocking: ${BLOCKED_DOMAINS.length} domains`);
 
+// import play commands from play-commands.js
+const { handleTogglePlayPause, handleControlCommand } = require('./play-commands');
+
 let mainWindow = null;
 let trayIcon = null;
 
@@ -84,46 +87,15 @@ function createWindow() {
         // },
         { // TOGGLE PLAY/PAUSE SONG
             label: 'Play/Pause',
-            click: async () => {
-                const status = await mainWindow.webContents.executeJavaScript('window.soundcloudApi.getStatus()');
-                if (status === 'playing') {
-                    console.log('→ Sending PAUSE command');
-                    try {
-                        mainWindow.webContents.executeJavaScript("window.soundcloudApi.control('pause')");
-                    } catch (err) {
-                        console.error('Pause command failed:', err);
-                    }
-                } else if (status === 'paused') {
-                    console.log('→ Sending PLAY command');
-                    try {
-                        mainWindow.webContents.executeJavaScript("window.soundcloudApi.control('play')");
-                    } catch (err) {
-                        console.error('Play command failed:', err);
-                    }
-                } else {
-                    console.warn('Unknown status, cannot toggle play/pause');
-                }
-            }
+            click: async () => handleTogglePlayPause(mainWindow)
         },
         { // NEXT SONG
             label: 'Next',
-            click: () => {
-                try {
-                    mainWindow.webContents.executeJavaScript("window.soundcloudApi.control('next')");
-                } catch (err) {
-                    console.error('Next command failed:', err);
-                }
-            }
+            click: () => handleControlCommand(mainWindow, 'next')
         },
         { // PREVIOUS SONG
             label: 'Previous',
-            click: () => {
-                try {
-                    mainWindow.webContents.executeJavaScript("window.soundcloudApi.control('prev')");
-                } catch (err) {
-                    console.error('Previous command failed:', err);
-                }
-            }
+            click: () => handleControlCommand(mainWindow, 'prev')
         },
         { // SHOW APP IF HIDDEN
             label: 'Show App', click: () => {
@@ -234,7 +206,6 @@ function createWindow() {
 }
 
 app.whenReady().then(createWindow);
-
 // Handle app quitting to allow proper cleanup and prevent issues with tray on some platforms
 app.on('before-quit', () => {
     app.isQuitting = true;
