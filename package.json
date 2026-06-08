@@ -1,6 +1,6 @@
 {
   "name": "soyoucloud",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Client SoundCloud légitime et privé avec blocage des publicités.",
   "main": "main.js",
   "scripts": {
