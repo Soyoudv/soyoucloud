@@ -128,14 +128,7 @@ function createWindow() {
     tray.setContextMenu(contextMenu);
 
     // left click on tray icon to toggle window
-    tray.on('click', () => {
-        if (mainWindow.isVisible()) {
-            mainWindow.hide();
-        } else {
-            mainWindow.show();
-            mainWindow.focus();
-        }
-    });
+    tray.on('click', () => handleTogglePlayPause(mainWindow));
 
     // --- CSS CUSTOM ---
 
