@@ -1,6 +1,9 @@
-# SoyouCloud
+# <center> SoyouCloud </center>
 
-A better SoundCloud client.
+
+<center><img src="assets/sc_icon.png" style="height: 128"></center>
+<br>
+<center>A client for SoundCloud without ads and shit because i got bored...</center>
 
 ## Installation:
 
