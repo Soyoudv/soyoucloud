@@ -1,7 +1,8 @@
 <h1 align="center">SoyouCloud</h1>
 
-
-<img src="assets/sc_icon.png" style="height: 128" align="center"></img>
+<div align="center">
+    <img src="assets/sc_icon.png" style="height: 128"></img>
+</div>
 
 <BR>
 
