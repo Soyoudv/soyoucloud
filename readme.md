@@ -1,9 +1,11 @@
-# <center> SoyouCloud </center>
+<h1 align="center">SoyouCloud</h1>
 
 
-<center><img src="assets/sc_icon.png" style="height: 128"></center>
-<br>
-<center>A client for SoundCloud without ads and shit because i got bored...</center>
+<img src="assets/sc_icon.png" style="height: 128" align="center"></img>
+
+<BR>
+
+<p align="center">A client for SoundCloud without ads and shit because i got bored...</p>
 
 ## Installation:
 
