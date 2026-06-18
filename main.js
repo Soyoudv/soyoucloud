@@ -74,17 +74,6 @@ function createWindow() {
 
     // tray menu
     const contextMenu = Menu.buildFromTemplate([
-        // {
-        //     label: 'Status Checker', // Nouveau bouton de test
-        //     click: async () => {
-        //         try {
-        //             const status = await mainWindow.webContents.executeJavaScript('window.soundcloudApi.getStatus()');
-        //             console.log('SoundCloud Status:', status);
-        //         } catch (err) {
-        //             console.error('Status check failed:', err);
-        //         }
-        //     }
-        // },
         { // TOGGLE PLAY/PAUSE SONG
             label: 'Play/Pause',
             click: async () => handleControlCommand(mainWindow, 'play')
