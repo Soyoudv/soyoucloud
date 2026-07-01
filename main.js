@@ -1,4 +1,12 @@
-const { app, BrowserWindow, Tray, Menu, nativeImage, ipcMain } = require('electron'); const path = require('path');
+const { app } = require('electron')
+
+// close if another instance is present
+const gotTheLock = app.requestSingleInstanceLock()
+if (!gotTheLock) {
+    app.quit()
+}
+
+const { BrowserWindow, Tray, Menu, nativeImage, ipcMain } = require('electron'); const path = require('path');
 const fs = require('fs');
 
 // CONFIG PATHS
@@ -24,7 +32,7 @@ ipcMain.handle('get-sc-status', async () => {
     } catch (error) {
         console.error("IPC get-sc-status error:", error);
         return 'error';
-    }
+    }   
 });
 
 ipcMain.on('control-sc', (event, action) => {
