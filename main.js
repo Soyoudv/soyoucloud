@@ -55,6 +55,14 @@ function createWindow() {
         autoHideMenuBar: true // hide menu bar for cleaner look
     });
 
+    // show this instance when another one is created and closed
+    app.on('second-instance', (event, commandLine, workingDirectory) => {
+        if (mainWindow){
+            mainWindow.show();
+            mainWindow.focus();
+        }
+    })
+
     // go to tray when closing
     mainWindow.on('close', (event) => {
         if (!app.isQuitting) {
