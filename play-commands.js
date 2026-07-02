@@ -15,17 +15,17 @@ async function safeExecute(window, script) {
 }
 
 async function handleTogglePlayPause(mainWindow) { // toggle play/pause based on current status
-    const status = await mainWindow.webContents.executeJavaScript('window.soundcloudApi.getStatus()');
+    const status = await mainWindow.webContents.executeJavaScript('window.SC_API_custom.getStatus()');
 
     if (status === 'playing') {
         try {
-            mainWindow.webContents.executeJavaScript("window.soundcloudApi.control('pause')");
+            mainWindow.webContents.executeJavaScript("window.SC_API_custom.control('pause')");
         } catch (err) {
             console.error('Pause command failed:', err);
         }
     } else if (status === 'paused') {
         try {
-            mainWindow.webContents.executeJavaScript("window.soundcloudApi.control('play')");
+            mainWindow.webContents.executeJavaScript("window.SC_API_custom.control('play')");
         } catch (err) {
             console.error('Play command failed:', err);
         }
@@ -36,7 +36,7 @@ async function handleTogglePlayPause(mainWindow) { // toggle play/pause based on
 
 async function handleControlCommand(mainWindow, action) { // send a simple command (play/pause/next/prev)
     try {
-        await safeExecute(mainWindow, `window.soundcloudApi.control('${action}')`);
+        await safeExecute(mainWindow, `window.SC_API_custom.control('${action}')`);
     } catch (err) {
         console.warn(`Could not send '${action}' command:`, err);
     }

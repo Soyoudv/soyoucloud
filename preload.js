@@ -1,6 +1,6 @@
 const { contextBridge } = require('electron');
 
-contextBridge.exposeInMainWorld('soundcloudApi', {
+contextBridge.exposeInMainWorld('SC_API_custom', {
     getStatus: () => {
         try {
             const playBtn = document.querySelector('button[title*=" current"]');
@@ -18,7 +18,7 @@ contextBridge.exposeInMainWorld('soundcloudApi', {
             return 'unknown';
 
         } catch (error) {
-            console.error("SoundCloud API - getStatus error:", error);
+            console.error("SC_API_custom - getStatus error:", error);
             return 'error';
         }
     },
@@ -50,7 +50,7 @@ contextBridge.exposeInMainWorld('soundcloudApi', {
             }
 
         } catch (error) {
-            console.error("SoundCloud API - Control error:", error);
+            console.error("SC_API_custom - Control error:", error);
             return { success: false, error: error.message, action };
         }
     }
