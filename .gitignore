@@ -10,6 +10,7 @@ data/
 Thumbs.db
 *.log
 prov/
+prov*
 
 # Editeurs de texte
 .vscode/

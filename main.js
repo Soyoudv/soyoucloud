@@ -25,21 +25,6 @@ const { handleTogglePlayPause, handleControlCommand } = require('./play-commands
 let mainWindow = null;
 let trayIcon = null;
 
-// --- IPC HANDLERS ---
-ipcMain.handle('get-sc-status', async () => {
-    try {
-        return await mainWindow.webContents.executeJavaScript('window.SC_API_custom.getStatus()');
-    } catch (error) {
-        console.error("IPC get-sc-status error:", error);
-        return 'error';
-    }   
-});
-
-ipcMain.on('control-sc', (event, action) => {
-    mainWindow.webContents.executeJavaScript(`window.SC_API_custom.control('${action}')`)
-        .catch(err => console.error("IPC control-sc error:", err));
-});
-
 // --- CREATE WINDOW ---
 function createWindow() {
     const mainWindow = new BrowserWindow({
