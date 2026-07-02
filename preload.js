@@ -45,7 +45,7 @@ contextBridge.exposeInMainWorld('SC_API_custom', {
                 target.click();
                 return { success: true, action };
             } else {
-                console.warn(`Soncloud API - Bouton '${action}' introuvable.`);
+                console.warn(`SC_API_custom - Bouton '${action}' introuvable.`);
                 throw new Error("Button not found");
             }
 
