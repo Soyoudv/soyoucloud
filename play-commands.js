@@ -1,10 +1,11 @@
 const { ipcMain } = require('electron');
 
 /**
- * Exécute un script JS dans le renderer et gère les erreurs silencieusement
- * @param {BrowserWindow} window - La fenêtre cible
- * @param {string} script - Le code JS à exécuter
- */
+* Exécute un script JS dans le renderer et gère les erreurs silencieusement
+* @param {BrowserWindow} window - La fenêtre cible
+* @param {string} script - Le code JS à exécuter
+*/
+
 async function safeExecute(window, script) {
     try {
         return await window.webContents.executeJavaScript(script);
