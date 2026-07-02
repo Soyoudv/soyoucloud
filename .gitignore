@@ -1,5 +1,6 @@
 # Dépendances installées (toujours ignoré)
 node_modules/
+package-lock.json
 
 # Données utilisateurs & profils (sécurité & spécificité locale)
 data/
