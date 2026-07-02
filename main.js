@@ -20,7 +20,7 @@ const BLOCKED_DOMAINS = loadBlocklist(path.join(__dirname, 'utils', 'blocklist',
 // console.log(`[${new Date().toISOString()}] Active blocking: ${BLOCKED_DOMAINS.length} domains`);
 
 // import play commands from play-commands.js
-const { handleTogglePlayPause, handleControlCommand } = require('./play-commands');
+const { handleTogglePlayPause, handleControlCommand } = require('./cust_modules/play-commands');
 
 let mainWindow = null;
 let trayIcon = null;
